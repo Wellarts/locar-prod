@@ -120,7 +120,7 @@ class AgendamentoResource extends Resource
                                 Forms\Components\Textarea::make('obs')
                                     ->label('Observações'),
                                 Forms\Components\Toggle::make('status')
-                                    ->label('Finalizar Agendamento'),
+                                    ->label('Finalizar Agendamento2'),
 
                             ]),
                     ]),
