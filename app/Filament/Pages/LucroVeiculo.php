@@ -33,7 +33,7 @@ class LucroVeiculo extends Page implements HasForms, HasTable
         /** @var \App\Models\User */
         $authUser =  auth()->user();
 
-        if($authUser->hasRole('Administrador'))
+        if($authUser->hasRole('Administrador') || $authUser->hasRole('demos'))
         {
               return true;
         }
