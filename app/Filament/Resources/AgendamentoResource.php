@@ -54,14 +54,14 @@ class AgendamentoResource extends Resource
                                 ->searchable()
                                 ->getSearchResultsUsing(function (string $search) {
                                     $veiculos = Veiculo::where('modelo', 'like', "%{$search}%")->limit(50)->get();
-                             
+
                                     return $veiculos->mapWithKeys(function ($veiculos) {
                                           return [$veiculos->getKey() => static::getCleanOptionString($veiculos)];
                                          })->toArray();
                                 })
                                ->getOptionLabelUsing(function ($value): string {
                                    $veiculo = Veiculo::find($value);
-                             
+
                                    return static::getCleanOptionString($veiculo);
                                }),
                               //  ->options(Veiculo::all()->pluck('modelo', 'id')->toArray()),
@@ -82,10 +82,10 @@ class AgendamentoResource extends Resource
                                     $dt_retorno = Carbon::parse($get('data_retorno'));
                                     $qtd_dias = $dt_retorno->diffInDays($dt_saida);
                                     $set('qtd_diarias', $qtd_dias);
-                                  
+
                                     $carro = Veiculo::find($get('veiculo_id'));
                                     $set('valor_total', ($carro->valor_diaria * $qtd_dias));
-                             
+
                                 })
                                 ->required(),
                             Forms\Components\TimePicker::make('hora_retorno')
@@ -93,7 +93,7 @@ class AgendamentoResource extends Resource
                                 ->required(),
                             ]),
                         Fieldset::make('Valores')
-                            ->schema([    
+                            ->schema([
                                 Forms\Components\TextInput::make('qtd_diarias')
                                     ->disabled()
                                     ->label('Qtd Diárias')
@@ -101,18 +101,18 @@ class AgendamentoResource extends Resource
                                 Forms\Components\TextInput::make('valor_total')
                                     ->disabled()
                                     ->label('Valor Total')
-                                    ->required(),    
+                                    ->required(),
                                 Forms\Components\TextInput::make('valor_desconto')
-                                    ->label('Valor Desconto'),                                    
+                                    ->label('Valor Desconto'),
                                 Forms\Components\TextInput::make('valor_pago')
                                     ->required()
                                     ->label('Valor Pago')
                                     ->reactive()
                                     ->afterStateUpdated(function ($state, callable $set, Closure $get,) {
                                         $set('valor_restante', (((float)$get('valor_total') - (float)$get('valor_desconto')) - (float)$get('valor_pago')));
-                                        
+
                                     }),
-                                       
+
                                 Forms\Components\TextInput::make('valor_restante')
                                     ->disabled()
                                     ->label('Valor Restante')
@@ -120,9 +120,9 @@ class AgendamentoResource extends Resource
                                 Forms\Components\Textarea::make('obs')
                                     ->label('Observações'),
                                 Forms\Components\Toggle::make('status')
-                                    ->label('Finalizar Locação'),
-                                                                     
-                            ]),        
+                                    ->label('Finalizar Agendamento2'),
+
+                            ]),
                     ]),
             ]);
     }
@@ -207,14 +207,14 @@ class AgendamentoResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -222,8 +222,8 @@ class AgendamentoResource extends Resource
             'create' => Pages\CreateAgendamento::route('/create'),
             'edit' => Pages\EditAgendamento::route('/{record}/edit'),
         ];
-    } 
-    
+    }
+
     public static function getCleanOptionString(Veiculo $veiculo): string
     {
         return Purify::clean(
