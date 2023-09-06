@@ -22,7 +22,7 @@ class Dashbord extends Page
         /** @var \App\Models\User */
         $authUser =  auth()->user();
 
-        if($authUser->hasRole('Administrador'))
+        if($authUser->hasRole('Administrador') || $authUser->hasRole('demos'))
         {
               return true;
         }
